@@ -1,6 +1,11 @@
+<!--https://stackoverflow.com/questions/67978223/flutter-http-get-request-doesnt-work-on-apk-release-->
+<!--permite consultar apis no seguras al momento de empaquetar la app-->
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.qr_login_app">
+   <uses-permission android:name="android.permission.INTERNET"/>
    <application
+        android:usesCleartextTraffic="true"
         android:label="qr_login_app"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">

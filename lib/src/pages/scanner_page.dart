@@ -2,8 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'package:qr_login_app/src/pages/ws_client.dart';
-import 'package:stomp_dart_client/stomp.dart';
+import 'package:http/http.dart' as http;
 
 class ScannerPage extends StatefulWidget {
   final String ip;
@@ -37,10 +36,13 @@ class _ScannerPageState extends State<ScannerPage> {
 
           setState(() {
             _data = value;
-            stompClientF(ipPort, token, value).activate();
+            http.post(Uri.http(ipPort, 'test/sendToUser'),
+                headers: {
+                  "Content-Type": "application/json",
+                  "Authorization": "Bearer $token",
+                },
+                body: json.encode({"tokenQr": value}));
           });
-
-          // setState(() => {_data = value});
         });
 
     return Scaffold(

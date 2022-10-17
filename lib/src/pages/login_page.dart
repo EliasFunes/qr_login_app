@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:qr_login_app/src/pages/home_page.dart';
 
-// const SERVER_IP = '192.168.0.3:8080';
 final storage = FlutterSecureStorage();
 
 class LoginPage extends StatefulWidget {
@@ -139,7 +138,8 @@ class _State extends State<LoginPage> {
 
 Future<String?> attemptLogIn(
     String username, String password, String ipPortController) async {
-  var res = await http.post(Uri.http(ipPortController, 'jwt/user/authenticate'),
+  var res = await http.post(
+      Uri.http(ipPortController, 'jwt/user_lessor/authenticate'),
       headers: {"Content-Type": "application/json"},
       body: json.encode({"username": username, "password": password}));
   if (res.statusCode == 200) return res.body;
