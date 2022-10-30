@@ -36,7 +36,7 @@ class _ScannerPageState extends State<ScannerPage> {
 
           setState(() {
             _data = value;
-            http.post(Uri.http(ipPort, 'test/sendToUser'),
+            http.post(Uri.http(ipPort, 'ws/sendToUser'),
                 headers: {
                   "Content-Type": "application/json",
                   "Authorization": "Bearer $token",

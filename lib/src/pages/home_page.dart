@@ -20,35 +20,44 @@ class HomePage extends StatelessWidget {
   final String portAndHost;
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(title: Text("Secret Data Screen")),
-        body: Center(
-          child: FutureBuilder(
-              future: http.read(Uri.http(portAndHost, 'test/jdbc_test'),
-                  headers: {
-                    "Authorization": 'Bearer $jwt',
-                    'Content-Type': 'text/plain'
-                  }),
-              builder: (context, snapshot) => snapshot.hasData
-                  ? Column(
-                      children: <Widget>[
-                        Text("${payload['username']}, here's the data:"),
-                        Text(snapshot.data.toString(),
-                            style: Theme.of(context).textTheme.displayMedium)
-                      ],
-                    )
-                  : snapshot.hasError
-                      ? Text("An error occurred ${snapshot.error}")
-                      : CircularProgressIndicator()),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () =>
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-            var splited = portAndHost.split(":");
-            return ScannerPage(splited.first, splited[1], jwt);
-          })),
-          child: Icon(Icons.qr_code_scanner),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      );
+  Widget build(BuildContext context) {
+    Map valueMap = json.decode(jwt);
+    String token = valueMap['token'];
+    return Scaffold(
+      appBar: AppBar(title: Text("Secret Data Screen")),
+      body: Center(
+        child: FutureBuilder(
+            future: http.read(Uri.http(portAndHost, 'test/jdbc_test'),
+                headers: {
+                  "Authorization": 'Bearer $token',
+                  'Content-Type': 'text/plain'
+                }),
+            builder: (context, snapshot) => snapshot.hasData
+                ? Column(
+                    children: <Widget>[
+                      Text("${payload['username']}, here's the data:"),
+                      Text(snapshot.data.toString(),
+                          style: Theme.of(context).textTheme.displayMedium)
+                    ],
+                  )
+                : snapshot.hasError
+                    ? Column(
+                        children: [
+                          Text("An error occurred ${snapshot.error}"),
+                          Text("portAndHost: $portAndHost, Bearer $token")
+                        ],
+                      )
+                    : CircularProgressIndicator()),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () =>
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+          var splited = portAndHost.split(":");
+          return ScannerPage(splited.first, splited[1], jwt);
+        })),
+        child: Icon(Icons.qr_code_scanner),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
+  }
 }
