@@ -4,8 +4,6 @@ import 'dart:convert' show json, base64, ascii;
 
 import 'package:qr_login_app/src/pages/scanner_page.dart';
 
-// const SERVER_IP = '192.168.0.3:8080';
-
 class HomePage extends StatelessWidget {
   HomePage(this.jwt, this.payload, this.portAndHost);
 
@@ -24,7 +22,7 @@ class HomePage extends StatelessWidget {
     Map valueMap = json.decode(jwt);
     String token = valueMap['token'];
     return Scaffold(
-      appBar: AppBar(title: Text("Secret Data Screen")),
+      appBar: AppBar(title: Text("QR-Login-App")),
       body: Center(
         child: FutureBuilder(
             future: http.read(Uri.http(portAndHost, 'test/jdbc_test'),

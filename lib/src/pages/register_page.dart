@@ -2,20 +2,18 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:qr_login_app/src/pages/home_page.dart';
-import 'package:qr_login_app/src/pages/register_page.dart';
+import 'package:qr_login_app/src/pages/login_page.dart';
 
-final storage = FlutterSecureStorage();
-
-class LoginPage extends StatefulWidget {
+class RegisterPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => new _State();
 }
 
-class _State extends State<LoginPage> {
+class _State extends State<RegisterPage> {
   TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController rePasswordController = TextEditingController();
   TextEditingController ipPortController =
       TextEditingController(text: '192.168.0.6:8080');
 
@@ -29,7 +27,7 @@ class _State extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Login'),
+          title: Text('Register'),
         ),
         body: Padding(
             padding: EdgeInsets.all(10),
@@ -66,7 +64,18 @@ class _State extends State<LoginPage> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                  padding: EdgeInsets.all(10),
+                  child: TextField(
+                    keyboardType: TextInputType.emailAddress,
+                    controller: emailController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'email',
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.fromLTRB(10, 15, 10, 0),
                   child: TextField(
                     obscureText: true,
                     controller: passwordController,
@@ -76,14 +85,16 @@ class _State extends State<LoginPage> {
                     ),
                   ),
                 ),
-                TextButton(
-                  onPressed: () {
-                    //forgot password screen
-                  },
-                  style: TextButton.styleFrom(
-                    primary: Colors.blue,
+                Container(
+                  padding: EdgeInsets.fromLTRB(10, 10, 10, 30),
+                  child: TextField(
+                    obscureText: true,
+                    controller: rePasswordController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Re-Password',
+                    ),
                   ),
-                  child: Text('Forgot Password'),
                 ),
                 Container(
                     height: 50,
@@ -91,66 +102,43 @@ class _State extends State<LoginPage> {
                     child: RaisedButton(
                       textColor: Colors.white,
                       color: Colors.blue,
-                      child: Text('Login'),
+                      child: Text('Register'),
                       onPressed: () async {
                         var username = nameController.text;
+                        var email = emailController.text;
                         var password = passwordController.text;
+                        var rePassword = rePasswordController.text;
                         var ipPort = ipPortController.text;
-                        var jwt =
-                            await attemptLogIn(username, password, ipPort);
-                        if (jwt != null) {
-                          storage.write(key: "jwt", value: jwt);
+                        var success = await attemptRegister(
+                            username, email, password, rePassword, ipPort);
+
+                        if (success) {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => HomePage.fromBase64(
-                                      jwt, ipPortController.text)));
+                                  builder: (context) => LoginPage()));
                         } else {
                           displayDialog(context, "An Error Occurred",
-                              "No account was found matching that username and password");
+                              "Cannot register user");
                         }
                       },
                     )),
-                Container(
-                    child: Row(
-                  children: <Widget>[
-                    Text('Does not have account?'),
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        primary: Colors.blue,
-                      ),
-                      child: Text(
-                        'Sign in',
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      onPressed: () async {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => RegisterPage()));
-                      },
-                    )
-                  ],
-                  mainAxisAlignment: MainAxisAlignment.center,
-                ))
               ],
             )));
   }
 }
 
-Future<String?> attemptLogIn(
-    String username, String password, String ipPortController) async {
-  var res = await http.post(
-      Uri.http(ipPortController, 'jwt/user_lessor/authenticate'),
+Future<bool> attemptRegister(String username, String email, String password,
+    String rePassword, String ipPortController) async {
+  var res = await http.post(Uri.http(ipPortController, '/jwt/user/register'),
       headers: {"Content-Type": "application/json"},
-      body: json.encode({"username": username, "password": password}));
-  if (res.statusCode == 200) return res.body;
-  return null;
-}
+      body: json.encode({
+        "username": username,
+        "email": email,
+        "password": password,
+        "rePassword": rePassword
+      }));
 
-Future<int> attemptSignUp(String username, String password) async {
-  var res = await http.post(Uri.http('', 'signup'),
-      headers: {"Content-Type": "application/json"},
-      body: json.encode({"username": username, "password": password}));
-  return res.statusCode;
+  if (res.statusCode == 200) return true;
+  return false;
 }
