@@ -29,7 +29,7 @@ class _State extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Login'),
+          title: Text('Inicio de sesión'),
         ),
         body: Padding(
             padding: EdgeInsets.all(10),
@@ -51,7 +51,7 @@ class _State extends State<LoginPage> {
                     controller: ipPortController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: 'Ip and port of host server',
+                      labelText: 'Ip y puerto del servidor',
                     ),
                   ),
                 ),
@@ -61,7 +61,7 @@ class _State extends State<LoginPage> {
                     controller: nameController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: 'User Name',
+                      labelText: 'Nombre de usuario',
                     ),
                   ),
                 ),
@@ -72,7 +72,7 @@ class _State extends State<LoginPage> {
                     controller: passwordController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: 'Password',
+                      labelText: 'Contraseña',
                     ),
                   ),
                 ),
@@ -83,7 +83,7 @@ class _State extends State<LoginPage> {
                   style: TextButton.styleFrom(
                     primary: Colors.blue,
                   ),
-                  child: Text('Forgot Password'),
+                  child: Text('Has olvidado tu contraseña?'),
                 ),
                 Container(
                     height: 50,
@@ -91,7 +91,7 @@ class _State extends State<LoginPage> {
                     child: RaisedButton(
                       textColor: Colors.white,
                       color: Colors.blue,
-                      child: Text('Login'),
+                      child: Text('Iniciar sesión'),
                       onPressed: () async {
                         var username = nameController.text;
                         var password = passwordController.text;
@@ -106,21 +106,21 @@ class _State extends State<LoginPage> {
                                   builder: (context) => HomePage.fromBase64(
                                       jwt, ipPortController.text)));
                         } else {
-                          displayDialog(context, "An Error Occurred",
-                              "No account was found matching that username and password");
+                          displayDialog(context, "Ocurrió un error",
+                              "No se encontró ninguna cuenta que coincida con ese nombre de usuario y contraseña");
                         }
                       },
                     )),
                 Container(
                     child: Row(
                   children: <Widget>[
-                    Text('Does not have account?'),
+                    Text('No tiene cuenta?'),
                     TextButton(
                       style: TextButton.styleFrom(
                         primary: Colors.blue,
                       ),
                       child: Text(
-                        'Sign in',
+                        'Registrarse',
                         style: TextStyle(fontSize: 20),
                       ),
                       onPressed: () async {

@@ -27,7 +27,7 @@ class _State extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Register'),
+          title: Text('Registro de usuario'),
         ),
         body: Padding(
             padding: EdgeInsets.all(10),
@@ -49,7 +49,7 @@ class _State extends State<RegisterPage> {
                     controller: ipPortController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: 'Ip and port of host server',
+                      labelText: 'Ip y puerto del servidor',
                     ),
                   ),
                 ),
@@ -59,7 +59,7 @@ class _State extends State<RegisterPage> {
                     controller: nameController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: 'User Name',
+                      labelText: 'Nombre de usuario',
                     ),
                   ),
                 ),
@@ -70,7 +70,7 @@ class _State extends State<RegisterPage> {
                     controller: emailController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: 'email',
+                      labelText: 'Email',
                     ),
                   ),
                 ),
@@ -81,7 +81,7 @@ class _State extends State<RegisterPage> {
                     controller: passwordController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: 'Password',
+                      labelText: 'Contraseña',
                     ),
                   ),
                 ),
@@ -92,7 +92,7 @@ class _State extends State<RegisterPage> {
                     controller: rePasswordController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: 'Re-Password',
+                      labelText: 'Repetir Contraseña',
                     ),
                   ),
                 ),
@@ -102,7 +102,7 @@ class _State extends State<RegisterPage> {
                     child: RaisedButton(
                       textColor: Colors.white,
                       color: Colors.blue,
-                      child: Text('Register'),
+                      child: Text('Registrar'),
                       onPressed: () async {
                         var username = nameController.text;
                         var email = emailController.text;
@@ -118,8 +118,8 @@ class _State extends State<RegisterPage> {
                               MaterialPageRoute(
                                   builder: (context) => LoginPage()));
                         } else {
-                          displayDialog(context, "An Error Occurred",
-                              "Cannot register user");
+                          displayDialog(context, "Ocurrió un error",
+                              "No se pudo registrar al usuario");
                         }
                       },
                     )),
