@@ -103,8 +103,8 @@ class _State extends State<LoginPage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => HomePage.fromBase64(
-                                      jwt, ipPortController.text)));
+                                  builder: (context) =>
+                                      HomePage(ipPortController.text)));
                         } else {
                           displayDialog(context, "Ocurrió un error",
                               "No se encontró ninguna cuenta que coincida con ese nombre de usuario y contraseña");
@@ -146,11 +146,4 @@ Future<String?> attemptLogIn(
       body: json.encode({"username": username, "password": password}));
   if (res.statusCode == 200) return res.body;
   return null;
-}
-
-Future<int> attemptSignUp(String username, String password) async {
-  var res = await http.post(Uri.http('', 'signup'),
-      headers: {"Content-Type": "application/json"},
-      body: json.encode({"username": username, "password": password}));
-  return res.statusCode;
 }
