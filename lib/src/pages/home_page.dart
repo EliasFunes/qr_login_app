@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
             Map valueMap = json.decode(jwt!);
             String token = valueMap['token'];
 
-            http.post(Uri.http(ipPort, 'ws/sendToUser'),
+            http.post(Uri.https(ipPort, 'ws/sendToUser'),
                 headers: {
                   "Content-Type": "application/json",
                   "Authorization": "Bearer $token",

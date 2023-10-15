@@ -25,7 +25,7 @@ class _LogListPageState extends State<LogListPage> {
       Map valueMap = json.decode(jwt!);
       String token = valueMap['token'];
       var res = await http
-          .get(Uri.http(ipPort, 'relation/getAllLogByUserId'), headers: {
+          .get(Uri.https(ipPort, 'relation/getAllLogByUserId'), headers: {
         "Content-Type": "application/json",
         "Authorization": "Bearer $token",
       });

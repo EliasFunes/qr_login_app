@@ -14,8 +14,8 @@ class _State extends State<RegisterPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController rePasswordController = TextEditingController();
-  TextEditingController ipPortController =
-      TextEditingController(text: '192.168.0.6:8080');
+  /*TextEditingController ipPortController =
+      TextEditingController(text: '192.168.0.6:8080');*/
 
   void displayDialog(context, title, text) => showDialog(
         context: context,
@@ -43,7 +43,7 @@ class _State extends State<RegisterPage> {
                           fontWeight: FontWeight.w500,
                           fontSize: 30),
                     )),
-                Container(
+                /*Container(
                   padding: EdgeInsets.all(10),
                   child: TextField(
                     controller: ipPortController,
@@ -52,7 +52,7 @@ class _State extends State<RegisterPage> {
                       labelText: 'Ip y puerto del servidor',
                     ),
                   ),
-                ),
+                ),*/
                 Container(
                   padding: EdgeInsets.all(10),
                   child: TextField(
@@ -108,7 +108,7 @@ class _State extends State<RegisterPage> {
                         var email = emailController.text;
                         var password = passwordController.text;
                         var rePassword = rePasswordController.text;
-                        var ipPort = ipPortController.text;
+                        var ipPort = "qrloginserver.eliasfunes.com";
                         var success = await attemptRegister(
                             username, email, password, rePassword, ipPort);
 
@@ -130,7 +130,7 @@ class _State extends State<RegisterPage> {
 
 Future<bool> attemptRegister(String username, String email, String password,
     String rePassword, String ipPortController) async {
-  var res = await http.post(Uri.http(ipPortController, '/jwt/user/register'),
+  var res = await http.post(Uri.https(ipPortController, '/jwt/user/register'),
       headers: {"Content-Type": "application/json"},
       body: json.encode({
         "username": username,

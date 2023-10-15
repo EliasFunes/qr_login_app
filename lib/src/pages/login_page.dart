@@ -16,8 +16,8 @@ class LoginPage extends StatefulWidget {
 class _State extends State<LoginPage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  TextEditingController ipPortController =
-      TextEditingController(text: '192.168.0.6:8080');
+  /*TextEditingController ipPortController =
+      TextEditingController(text: '192.168.0.6:8080');*/
 
   void displayDialog(context, title, text) => showDialog(
         context: context,
@@ -45,7 +45,7 @@ class _State extends State<LoginPage> {
                           fontWeight: FontWeight.w500,
                           fontSize: 30),
                     )),
-                Container(
+                /* Container(
                   padding: EdgeInsets.all(10),
                   child: TextField(
                     controller: ipPortController,
@@ -54,7 +54,7 @@ class _State extends State<LoginPage> {
                       labelText: 'Ip y puerto del servidor',
                     ),
                   ),
-                ),
+                ),*/
                 Container(
                   padding: EdgeInsets.all(10),
                   child: TextField(
@@ -95,7 +95,7 @@ class _State extends State<LoginPage> {
                       onPressed: () async {
                         var username = nameController.text;
                         var password = passwordController.text;
-                        var ipPort = ipPortController.text;
+                        var ipPort = "qrloginserver.eliasfunes.com";
                         var jwt =
                             await attemptLogIn(username, password, ipPort);
                         if (jwt != null) {
@@ -103,8 +103,8 @@ class _State extends State<LoginPage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      HomePage(ipPortController.text)));
+                                  builder: (context) => HomePage(
+                                      "qrloginserver.eliasfunes.com")));
                         } else {
                           displayDialog(context, "Ocurrió un error",
                               "No se encontró ninguna cuenta que coincida con ese nombre de usuario y contraseña");
@@ -141,7 +141,7 @@ class _State extends State<LoginPage> {
 Future<String?> attemptLogIn(
     String username, String password, String ipPortController) async {
   var res = await http.post(
-      Uri.http(ipPortController, 'jwt/user_lessor/authenticate'),
+      Uri.https(ipPortController, 'jwt/user_lessor/authenticate'),
       headers: {"Content-Type": "application/json"},
       body: json.encode({"username": username, "password": password}));
   if (res.statusCode == 200) return res.body;

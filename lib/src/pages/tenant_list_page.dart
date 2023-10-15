@@ -24,7 +24,7 @@ class _TenantListPageState extends State<TenantListPage> {
       Map valueMap = json.decode(jwt!);
       String token = valueMap['token'];
       var res =
-          await http.get(Uri.http(ipPort, 'relation/getAllByUser'), headers: {
+          await http.get(Uri.https(ipPort, 'relation/getAllByUser'), headers: {
         "Content-Type": "application/json",
         "Authorization": "Bearer $token",
       });
